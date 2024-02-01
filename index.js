@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import cors from "cors"
-import route from "./routes/todoRoutes.js";
+import route from "./routes/productRoutes.js";
 import userroute from "./routes/userRoutes.js";
 
 

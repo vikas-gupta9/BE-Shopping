@@ -3,7 +3,7 @@ import fs from "fs";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const directory = "C:/Users/vikas_gupta9/Desktop/BE app/Todo-FE/src/assets/";
+    const directory = "C:/Users/vikas_gupta9/Desktop/BE app/Shopping-FE/src/assets/";
     if (!fs.existsSync(directory)) {
       fs.mkdirSync(directory);
     }

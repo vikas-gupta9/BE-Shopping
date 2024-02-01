@@ -1,5 +1,5 @@
 import express from "express"
-import { addToCart, create, deleteUser, getAll, getAllCart, getOne, removeFromCart, update, updateQuantity } from "../controller/todoController.js";
+import { addToCart, create, deleteUser, getAll, getAllCart, getOne, removeFromCart, update, updateQuantity } from "../controller/productController.js";
 import validateFileAndUpload from "../middleware/uploadMiddleware.js";
 import { validateToken } from "./userRoutes.js";
 

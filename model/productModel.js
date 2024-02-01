@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const todoSchema = new mongoose.Schema({
+const productSchema = new mongoose.Schema({
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
@@ -31,7 +31,7 @@ const todoSchema = new mongoose.Schema({
   ],
 });
 
-export default mongoose.model("Tasks", todoSchema);
+export default mongoose.model("Products", productSchema);
 
 // status: {
 //   type: String,

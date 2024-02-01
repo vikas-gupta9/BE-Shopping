@@ -1,10 +1,10 @@
-import Task from "../model/todoModel.js";
+import Product from "../model/productModel.js";
 import Cart from "../model/cartModel.js";
 
 // Get all carts
 export const getAll = async (req, res) => {
   try {
-    const todoData = await Task.find({ user_id: req.user.user_id });
+    const todoData = await Product.find({ user_id: req.user.user_id });
     if (!todoData) {
       return res.status(404).json({ msg: "Data not found" });
     }
@@ -30,7 +30,7 @@ export const getAllCart = async (req, res) => {
 export const getOne = async (req, res) => {
   try {
     const id = req.params.id;
-    const TodoExist = await Task.findById(id);
+    const TodoExist = await Product.findById(id);
     if (!TodoExist) {
       return res.status(404).json({ msg: "Data not found" });
     }
@@ -44,7 +44,7 @@ export const getOne = async (req, res) => {
 export const create = async (req, res) => {
   try {
     const { name, description, color, price } = req.body;
-    // const todoData = new Task(req.body);
+    // const todoData = new Product(req.body);
     if (!name || !description || !color || !price) {
       return res.status(404).json({ msg: "Product not found" });
     }
@@ -53,7 +53,7 @@ export const create = async (req, res) => {
       filePath: file.path,
       fileSize: file.size,
     }));
-    const savedData = await new Task({
+    const savedData = await new Product({
       name,
       description,
       color,
@@ -72,7 +72,7 @@ export const create = async (req, res) => {
 export const update = async (req, res) => {
   try {
     const id = req.params.id;
-    const todoExist = await Task.findById(id);
+    const todoExist = await Product.findById(id);
     if (!todoExist) {
       return res.status(404).json({ msg: "Product not found" });
     }
@@ -81,7 +81,7 @@ export const update = async (req, res) => {
         .status(403)
         .json({ msg: "User don't have permission to update other Products" });
     }
-    const updatedData = await Task.findByIdAndUpdate(id, req.body, {
+    const updatedData = await Product.findByIdAndUpdate(id, req.body, {
       new: true,
     });
     res.status(200).json(updatedData);
@@ -94,7 +94,7 @@ export const update = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     const id = req.params.id;
-    const todoExist = await Task.findById(id);
+    const todoExist = await Product.findById(id);
     if (!todoExist) {
       return res.status(404).json({ msg: "Product data not found" });
     }
@@ -103,7 +103,7 @@ export const deleteUser = async (req, res) => {
         .status(403)
         .json({ msg: "User don't have permission to update other Products" });
     }
-    await Task.findByIdAndDelete(id);
+    await Product.findByIdAndDelete(id);
     res
       .status(200)
       .json({ msg: `Product ${todoExist.name} deleted successfully` });
