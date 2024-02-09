@@ -11,17 +11,17 @@ export const validateToken = async(req, res, next) => {
     let authHeader = await req.headers.Authorization || req.headers.authorization;
     if(authHeader && authHeader.startsWith("Bearer")){
         token = authHeader.split(" ")[1];
-        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+       jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
             if(err)
             {
-                res.status(401).json({msg:"User is not Authorized"})
+                return res.status(401).json({msg:"User is not Authorized"})
             }
-            // console.log(decoded.user)
-            req.user = decoded.user;
+            console.log(decoded?.user)
+            req.user = decoded?.user;
             next();
         });
-        if(!token) return res.status(401).json({msg:"User is not authorized or token is missing"})
     }
+    if(!token) return res.status(401).json({msg:"User is not authorized or token is missing"})
 }
 
 userroute.post("/register", register)

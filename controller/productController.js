@@ -4,11 +4,45 @@ import Cart from "../model/cartModel.js";
 // Get all carts
 export const getAll = async (req, res) => {
   try {
-    const todoData = await Product.find({ user_id: req.user.user_id });
+    // const todoData = await Product.find({ user_id: req.user.user_id });
+    const todoData = await Product.find();
+
     if (!todoData) {
       return res.status(404).json({ msg: "Data not found" });
     }
     res.status(200).json(todoData);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
+// Get search products
+export const getSearchProduct = async (req, res) => {
+  console.log(req.query);
+  try {
+    const searchText = req.query.search || "";
+    const page = parseInt(req.query.page) - 1 || 0;
+    const limit = parseInt(req.query.limit) || 3;
+
+    const searchData = await Product.find({
+      name: { $regex: ".*" + searchText + ".*", $options: "i" },
+    })
+      .skip(page * limit)
+      .limit(limit);
+    if (!searchData) {
+      return res.status(200).json({ msg: "Search is empty" });
+    }
+
+    const total = await Product.countDocuments({
+      name: { $regex: ".*" + searchText + ".*", $options: "i" },
+    });
+
+    const response = {
+      total,
+      page: page + 1,
+      limit,
+      searchData,
+    };
+    res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ error: error });
   }
@@ -58,7 +92,7 @@ export const create = async (req, res) => {
       description,
       color,
       price,
-      user_id: req.user.user_id,
+      // user_id: req.user.user_id,
       files,
     });
     const savedFilesData = await savedData.save();
@@ -112,11 +146,10 @@ export const deleteUser = async (req, res) => {
   }
 };
 
-
 // Add cart items
 export const addToCart = async (req, res) => {
   try {
-const { id,name, description, color, price, files, quantity } = req.body;
+    const { id, name, description, color, price, files, quantity } = req.body;
     const savedData = await new Cart({
       name,
       id,
@@ -145,7 +178,6 @@ export const removeFromCart = async (req, res) => {
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
-
 
 //update cart items quantity
 export const updateQuantity = async (req, res) => {
